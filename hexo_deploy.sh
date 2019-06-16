@@ -14,3 +14,6 @@ do
     fi
 done
 
+# 发布到 git 上
+hexo deploy
+
