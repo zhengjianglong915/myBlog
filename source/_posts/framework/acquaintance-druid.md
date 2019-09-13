@@ -1,8 +1,8 @@
-title: druid剖析(1)--初始 druid 
+title: Druid剖析(1)--初始 druid 
 layout: post
 date: 2019-06-16 09:12:43
 comments: true
-categories: "测试框架"
+categories: "框架"
 tags: 
     - Druid
     - 数据库
@@ -103,15 +103,14 @@ Druid的优势是在JDBC最低层进行拦截做判断，不会遗漏。
 
 | 对比维度/连接池 | Druid | BoneCP | DBCP | C3P0 | Proxool | JBoss | Tomcat-Jdbc | HikariCP |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 主要功能对比(是否支持) |
-|LRU| 是	| 否|	是|	否|	是|	是|	？|	 
+|LRU| 是	| 否|	是|	否|	是|	是|	？|	 |
 |PSCache|	是|	是|	是|	是|	否|	否|	是|	否|
-|PSCache-Oracle-Optimized|	是|	否|	否|	否|	否|	否|	否|	否|
+|PSCache-Oracle-Optimized|	是|	否|	否|	否|	否|	否|	否|	否||
 |ExceptionSorter|	是|	否|	否|	否|	否|	是|	否|
-|更新维护|	是|	否|	否|	否|	否|	?|	是|
+|更新维护|	是|	否|	否|	否|	否|	?|	是||
 |设计思路	| 	两个线程： 其中一个负责异步创建。一个负责最小连接数的维持。 其中心跳是通过获取连接，来判定是否小于心跳间隔。|	已经被HikariCP替代|	一个线程：负责心跳，最小连接数维持，最大空闲时间和防连接泄露。	| 四个线程；三个helperThread （pollerThread）,一个定时AdminTaskTimer（DeadlockDetector）||||三个线程： 其中一个为定时线程，解决最大空闲时间。两个为新建连接和关闭连接。 均是连接池，空闲5s，线程便会关闭。	 |
 | 拓展性|	 好|	较好|	弱|	弱|	 ||弱	 |弱|
-|稳定性|	 ||||	 	 	 	 	差，高并发下出错||||	 	 	 
+|稳定性|	 ||||	 	 	 	 	差，高并发下出错|||||	 	 	 
 	 	 
  	 	 	 	 	 	 	 	 	
 - ExceptionSorter：
